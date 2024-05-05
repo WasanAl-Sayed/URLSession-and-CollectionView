@@ -15,12 +15,35 @@ class UserDetailsViewController: UIViewController {
     @IBOutlet weak var followersNumberLabel: UILabel!
     
     var user: GithubUserModel?
+    var username: String?
+    let viewModel = GithubViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.setHidesBackButton(true, animated: true)
         configureImageView()
+        loadUserImage()
         viewUserData()
+    }
+    
+    @IBAction func didClickGetFollowers(_ sender: Any) {
+        guard let username = username else { return }
+        viewModel.getFollowers(username: username)
+        viewModel.followersLoaded = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                DispatchQueue.main.async {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let viewController = storyboard.instantiateViewController(withIdentifier: "followersVC") as! UserFollowersViewController
+                    viewController.navigationItem.title = "Followers"
+                    viewController.viewModel = self.viewModel 
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
+            case .failure(let error):
+                print("Error loading followers:", error)
+            }
+        }
     }
     
     func configureImageView() {
@@ -32,7 +55,6 @@ class UserDetailsViewController: UIViewController {
         usernameLabel.text = user?.name
         bioLabel.text = user?.bio
         loadUserFollowers()
-        loadUserImage()
     }
     
     func loadUserFollowers() {

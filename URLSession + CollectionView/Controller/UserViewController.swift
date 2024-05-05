@@ -23,7 +23,7 @@ class UserViewController: UIViewController {
     }
 
     func configureUserNameTextField() {
-        let borderColor: UIColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+        let borderColor: UIColor = UIColor(named: "borderColor") ?? UIColor.black
         usernameTextField.layer.borderColor = borderColor.cgColor
         usernameTextField.layer.borderWidth = 0.7
         usernameTextField.layer.cornerRadius = 25
@@ -84,6 +84,7 @@ class UserViewController: UIViewController {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as! UserDetailsViewController
             viewController.user = user
+            viewController.username = self.usernameTextField.text ?? ""
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
