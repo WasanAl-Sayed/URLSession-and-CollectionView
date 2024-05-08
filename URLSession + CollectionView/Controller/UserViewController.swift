@@ -14,7 +14,6 @@ class UserViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     
     let viewModel = GithubViewModel()
-    
     var isButtonEnabled = true
     
     override func viewDidLoad() {
@@ -27,27 +26,28 @@ class UserViewController: UIViewController {
         usernameTextField.layer.borderColor = borderColor.cgColor
         usernameTextField.layer.borderWidth = 0.7
         usernameTextField.layer.cornerRadius = 25
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: usernameTextField.frame.height))
+        let paddingView = UIView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: 20,
+                height: usernameTextField.frame.height
+            )
+        )
         usernameTextField.backgroundColor = .clear
         usernameTextField.leftView = paddingView
         usernameTextField.leftViewMode = .always
     }
     
-    @IBAction func didClickSubmitButton(_ sender: UIButton) {
-        if let username = usernameTextField.text, !username.isEmpty {
-            usernameIsFull()
-        } else {
-            handleFailure(msg: "Please enter username")
-        }
-    }
-    
-    func usernameIsFull() {
+    private func usernameIsFull() {
         if isButtonEnabled {
             spinner.startAnimating()
-            configureSubmitButton(isEnabled: false, backgroundColor: UIColor.gray)
+            isButtonEnabled = false
+            submitButton.isEnabled = false
             let animationDuration: TimeInterval = 2.5
             DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) { [weak self] in
                 guard let self = self else { return }
+                
                 self.viewModel.getUser(username: self.usernameTextField.text ?? "") { result in
                     switch result {
                     case .success(let user):
@@ -60,14 +60,12 @@ class UserViewController: UIViewController {
         }
     }
     
-    func configureSubmitButton(isEnabled: Bool, backgroundColor: UIColor) {
+    private func configureSubmitButton(isEnabled: Bool) {
         isButtonEnabled = isEnabled
         submitButton.isEnabled = isEnabled
-        submitButton.backgroundColor = backgroundColor
-        submitButton.layer.cornerRadius = submitButton.frame.height / 5
     }
     
-    func errorMessage(error: GithubError) {
+    private func errorMessage(error: GithubError) {
         switch error {
         case .invalidURL:
             self.handleFailure(msg: "Invalid URL!")
@@ -78,23 +76,31 @@ class UserViewController: UIViewController {
         }
     }
     
-    func handleSuccess(user: GithubUserModel) {
+    private func handleSuccess(user: GithubUserModel) {
         DispatchQueue.main.async {
             self.spinner.stopAnimating()
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as! UserDetailsViewController
-            viewController.user = user
-            viewController.username = self.usernameTextField.text ?? ""
-            self.navigationController?.pushViewController(viewController, animated: true)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController
+            viewController?.user = user
+            viewController?.username = self.usernameTextField.text ?? ""
+            self.navigationController?.pushViewController(viewController ?? UserDetailsViewController(), animated: true)
         }
     }
     
-    func handleFailure(msg: String) {
+    private func handleFailure(msg: String) {
         DispatchQueue.main.async {
             self.spinner.stopAnimating()
             let popUp = PopUpViewController()
             popUp.appear(sender: self, msg: msg)
-            self.configureSubmitButton(isEnabled: true, backgroundColor: UIColor.black)
+            self.configureSubmitButton(isEnabled: true)
+        }
+    }
+    
+    @IBAction func didClickSubmitButton(_ sender: UIButton) {
+        if let username = usernameTextField.text, !username.isEmpty {
+            usernameIsFull()
+        } else {
+            handleFailure(msg: "Please enter username")
         }
     }
 }

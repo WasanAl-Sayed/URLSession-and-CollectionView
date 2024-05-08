@@ -28,8 +28,12 @@ class PopUpViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @IBAction func doneButtonClicked(_ sender: UIButton) {
-        hide()
+    private func show(msg: String) {
+        UIView.animate(withDuration: 0.5, delay: 0.0) {
+            self.backView.alpha = 1
+            self.contentView.alpha = 1
+        }
+        errorLabel.text = msg
     }
     
     func configureContentView() {
@@ -50,14 +54,6 @@ class PopUpViewController: UIViewController {
         }
     }
     
-    private func show(msg: String) {
-        UIView.animate(withDuration: 0.5, delay: 0.0) {
-            self.backView.alpha = 1
-            self.contentView.alpha = 1
-        }
-        errorLabel.text = msg
-    }
-    
     func hide() {
         UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut) {
             self.backView.alpha = 0
@@ -66,5 +62,9 @@ class PopUpViewController: UIViewController {
             self.dismiss(animated: false)
             self.removeFromParent()
         }
+    }
+    
+    @IBAction func doneButtonClicked(_ sender: UIButton) {
+        hide()
     }
 }

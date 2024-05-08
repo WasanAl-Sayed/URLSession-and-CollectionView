@@ -83,7 +83,7 @@
                             <constraint firstItem="2N0-vE-P2b" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="yUZ-ch-Sp3"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="HSb-Zf-fWY"/>
+                    <navigationItem key="navigationItem" style="editor" id="HSb-Zf-fWY"/>
                     <connections>
                         <outlet property="spinner" destination="2N0-vE-P2b" id="Gnb-dm-6y0"/>
                         <outlet property="submitButton" destination="ESE-bL-VoR" id="6wk-HA-C7r"/>
@@ -165,7 +165,7 @@
                             <constraint firstItem="pzT-6E-eDf" firstAttribute="centerX" secondItem="XAz-FJ-dfr" secondAttribute="centerX" id="xVT-fR-7pE"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="zaV-3D-5cp"/>
+                    <navigationItem key="navigationItem" style="editor" id="zaV-3D-5cp"/>
                     <connections>
                         <outlet property="bioLabel" destination="kxY-Jg-Edo" id="BJ5-Cu-sc1"/>
                         <outlet property="followersNumberLabel" destination="QuT-OA-pIB" id="CBm-yQ-r6K"/>
@@ -186,24 +186,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KDI-M8-RTH">
-                                <rect key="frame" x="16" y="59" width="361" height="759"/>
+                                <rect key="frame" x="0.0" y="135" width="393" height="717"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="QY4-mG-AMp">
-                                    <size key="itemSize" width="100" height="120"/>
-                                    <size key="estimatedItemSize" width="100" height="120"/>
+                                    <size key="itemSize" width="80" height="120"/>
+                                    <size key="estimatedItemSize" width="80" height="120"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="tpE-Xd-pqV">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="120"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7OV-hn-cjY">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="120"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="100" height="120"/>
+                                        <size key="customSize" width="80" height="120"/>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -211,14 +211,24 @@
                                     <outlet property="delegate" destination="DYO-wS-7rf" id="Evd-H8-Rsa"/>
                                 </connections>
                             </collectionView>
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="LRi-da-dZL">
+                                <rect key="frame" x="0.0" y="59" width="393" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="DYO-wS-7rf" id="YZ8-RD-tq0"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pNl-CI-ic4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="KDI-M8-RTH" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leadingMargin" id="G9Z-97-wXF"/>
-                            <constraint firstItem="KDI-M8-RTH" firstAttribute="top" secondItem="8DR-iR-9tz" secondAttribute="topMargin" id="bOe-Di-SNX"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="KDI-M8-RTH" secondAttribute="trailing" id="gPw-JZ-Wyv"/>
-                            <constraint firstItem="pNl-CI-ic4" firstAttribute="bottom" secondItem="KDI-M8-RTH" secondAttribute="bottom" id="pIf-3t-Iot"/>
+                            <constraint firstItem="LRi-da-dZL" firstAttribute="top" secondItem="pNl-CI-ic4" secondAttribute="top" id="6fY-C8-vtq"/>
+                            <constraint firstAttribute="trailing" secondItem="LRi-da-dZL" secondAttribute="trailing" id="7O5-Ap-zUM"/>
+                            <constraint firstItem="KDI-M8-RTH" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="G9Z-97-wXF"/>
+                            <constraint firstItem="KDI-M8-RTH" firstAttribute="top" secondItem="LRi-da-dZL" secondAttribute="bottom" constant="20" id="bOe-Di-SNX"/>
+                            <constraint firstAttribute="trailing" secondItem="KDI-M8-RTH" secondAttribute="trailing" id="gPw-JZ-Wyv"/>
+                            <constraint firstItem="LRi-da-dZL" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="iqX-yM-cS5"/>
+                            <constraint firstAttribute="bottom" secondItem="KDI-M8-RTH" secondAttribute="bottom" id="pIf-3t-Iot"/>
                         </constraints>
                     </view>
                     <connections>
@@ -237,6 +247,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="t5F-pP-RKe">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

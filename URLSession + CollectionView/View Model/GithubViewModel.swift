@@ -12,12 +12,18 @@ class GithubViewModel {
     var followers: [GithubFollowerModel]?
     var followersLoaded: ((Result<Void, GithubError>) -> Void)?
     
-    func getUser(username: String, completion: @escaping (Result<GithubUserModel, GithubError>) -> Void) {
+    func getUser(
+        username: String,
+        completion: @escaping (
+            Result<GithubUserModel, GithubError>
+        ) -> Void
+    ) {
         let endpoint = "https://api.github.com/users/\(username)"
         guard let url = URL(string: endpoint) else {
             completion(.failure(.invalidURL))
             return
         }
+        
         Task {
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)
@@ -25,6 +31,7 @@ class GithubViewModel {
                     completion(.failure(.invalidResponse))
                     return
                 }
+                
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let user = try decoder.decode(GithubUserModel.self, from: data)
@@ -43,7 +50,8 @@ class GithubViewModel {
         }
         URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard let self = self else { return }
-            if let error = error {
+            
+            if let error  {
                 self.followersLoaded?(.failure(.invalidData))
                 print("Error fetching followers:", error)
                 return
@@ -53,7 +61,8 @@ class GithubViewModel {
                 print("Invalid response")
                 return
             }
-            guard let data = data else {
+            
+            guard let data else {
                 self.followersLoaded?(.failure(.invalidData))
                 print("No data received")
                 return
