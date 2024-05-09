@@ -10,6 +10,7 @@ import UIKit
 class UserFollowersViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var viewModel = GithubViewModel()
     
@@ -27,7 +28,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return viewModel.followers?.count ?? 0
+        return viewModel.filteredFollowers?.count ?? 0
     }
     
     func collectionView(
@@ -38,9 +39,16 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             withReuseIdentifier: CustomCollectionViewCell.identifier,
             for: indexPath
         ) as? CustomCollectionViewCell
-        if let follower = viewModel.followers?[indexPath.item] {
+        if let follower = viewModel.filteredFollowers?[indexPath.item] {
             cell?.configureCell(follower: follower)
         }
         return cell ?? CustomCollectionViewCell()
+    }
+}
+
+extension UserFollowersViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchFollowers(name: searchText)
+        collectionView.reloadData()
     }
 }

@@ -9,7 +9,8 @@ import UIKit
 
 class GithubViewModel {
     
-    var followers: [GithubFollowerModel]?
+    private(set) var followers: [GithubFollowerModel]?
+    private(set) var filteredFollowers: [GithubFollowerModel]?
     var followersLoaded: ((Result<Void, GithubError>) -> Void)?
     
     func getUser(
@@ -67,16 +68,28 @@ class GithubViewModel {
                 print("No data received")
                 return
             }
+            
             do {
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 let followers = try decoder.decode([GithubFollowerModel].self, from: data)
                 self.followers = followers
+                self.filteredFollowers = followers
                 self.followersLoaded?(.success(()))
             } catch {
                 self.followersLoaded?(.failure(.invalidData))
                 print("Error decoding followers:", error)
             }
         }.resume()
+    }
+    
+    func searchFollowers(name: String) {
+        filteredFollowers?.removeAll()
+        
+        if name.isEmpty {
+            filteredFollowers = followers
+        } else {
+            filteredFollowers = followers?.filter { $0.login.localizedCaseInsensitiveContains(name) }
+        }
     }
 }

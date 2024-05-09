@@ -44,8 +44,7 @@ class UserViewController: UIViewController {
             spinner.startAnimating()
             isButtonEnabled = false
             submitButton.isEnabled = false
-            let animationDuration: TimeInterval = 2.5
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) { [weak self] in
+            DispatchQueue.main.async() { [weak self] in
                 guard let self = self else { return }
                 
                 self.viewModel.getUser(username: self.usernameTextField.text ?? "") { result in
@@ -96,7 +95,8 @@ class UserViewController: UIViewController {
         }
     }
     
-    @IBAction func didClickSubmitButton(_ sender: UIButton) {
+    
+    @IBAction func didPressSubmitButton(_ sender: UIButton) {
         if let username = usernameTextField.text, !username.isEmpty {
             usernameIsFull()
         } else {

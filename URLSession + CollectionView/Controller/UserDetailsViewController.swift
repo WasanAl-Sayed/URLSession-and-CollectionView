@@ -70,7 +70,8 @@ class UserDetailsViewController: UIViewController {
         followersNumberLabel.attributedText = followersText
     }
     
-    @IBAction func didClickGetFollowers(_ sender: Any) {
+    
+    @IBAction func didPressGetFollowers(_ sender: UIButton) {
         guard let username = username else { return }
         viewModel.getFollowers(username: username)
         viewModel.followersLoaded = { [weak self] result in

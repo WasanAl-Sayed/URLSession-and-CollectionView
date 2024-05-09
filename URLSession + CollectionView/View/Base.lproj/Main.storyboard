@@ -55,7 +55,7 @@
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="didClickSubmitButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xiI-bw-LUI"/>
+                                    <action selector="didPressSubmitButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lE9-EI-Eay"/>
                                 </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="2N0-vE-P2b">
@@ -92,7 +92,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="544.27480916030527" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="495" y="4"/>
         </scene>
         <!--User Details View Controller-->
         <scene sceneID="bis-NE-dWi">
@@ -146,7 +146,7 @@
                                     <color key="baseBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="didClickGetFollowers:" destination="KK0-5U-7OG" eventType="touchUpInside" id="fex-gv-Yh6"/>
+                                    <action selector="didPressGetFollowers:" destination="KK0-5U-7OG" eventType="touchUpInside" id="o5e-nv-PsR"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -175,7 +175,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Swb-Jn-Pl4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1289.3129770992366" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1181" y="4"/>
         </scene>
         <!--User Followers View Controller-->
         <scene sceneID="BqQ-gz-SOW">
@@ -233,11 +233,12 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="KDI-M8-RTH" id="ifB-Kv-EDx"/>
+                        <outlet property="searchBar" destination="LRi-da-dZL" id="qhL-MS-jgC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CgU-1x-5Ye" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1999.2366412213739" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1863" y="4"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Lgd-7w-YF0">
