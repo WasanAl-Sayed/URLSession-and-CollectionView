@@ -13,6 +13,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     
     static let identifier = "CustomCollectionViewCell"
+    let viewModel = GithubViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,29 +27,10 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     func configureCell(follower: GithubFollowerModel) {
         usernameLabel.text = follower.login.components(separatedBy: " ").first
-        loadFollowerImage(follower: follower)
-    }
-    
-    func loadFollowerImage(follower: GithubFollowerModel) {
-        let urlString = follower.avatarUrl
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let self = self else { return }
-            
-            if let error = error {
-                print("Error fetching image:", error)
-                return
-            }
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.imageView.image = image
-                }
-            } else {
-                print("Invalid image data")
+        viewModel.loadImage(from: follower.avatarUrl) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.imageView.image = image
             }
         }
-        task.resume()
     }
 }

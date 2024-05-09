@@ -20,8 +20,8 @@ class UserViewController: UIViewController {
         super.viewDidLoad()
         configureUserNameTextField()
     }
-
-    func configureUserNameTextField() {
+    
+    private func configureUserNameTextField() {
         let borderColor: UIColor = UIColor(named: "borderColor") ?? UIColor.black
         usernameTextField.layer.borderColor = borderColor.cgColor
         usernameTextField.layer.borderWidth = 0.7
@@ -94,7 +94,6 @@ class UserViewController: UIViewController {
             self.configureSubmitButton(isEnabled: true)
         }
     }
-    
     
     @IBAction func didPressSubmitButton(_ sender: UIButton) {
         if let username = usernameTextField.text, !username.isEmpty {

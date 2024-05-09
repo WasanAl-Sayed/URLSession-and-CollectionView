@@ -175,7 +175,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Swb-Jn-Pl4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1181" y="4"/>
+            <point key="canvasLocation" x="1131" y="4"/>
         </scene>
         <!--User Followers View Controller-->
         <scene sceneID="BqQ-gz-SOW">
@@ -238,7 +238,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CgU-1x-5Ye" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1863" y="4"/>
+            <point key="canvasLocation" x="1766" y="4"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Lgd-7w-YF0">
@@ -257,7 +257,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KlU-yS-DI4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-202" y="4"/>
+            <point key="canvasLocation" x="-143" y="4"/>
         </scene>
     </scenes>
     <resources>

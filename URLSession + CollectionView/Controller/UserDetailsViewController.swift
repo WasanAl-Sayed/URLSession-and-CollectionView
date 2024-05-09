@@ -32,34 +32,25 @@ class UserDetailsViewController: UIViewController {
     }
     
     private func loadUserImage() {
-        guard let urlString = user?.avatarUrl, let url = URL(string: urlString) else {
+        guard let urlString = user?.avatarUrl else {
             print("Invalid image URL")
             return
         }
-        let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-            guard let self = self else { return }
-            if let error = error {
-                print("Error fetching image:", error)
-                return
-            }
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.imageView.image = image
-                }
-            } else {
-                print("Invalid image data")
+        
+        viewModel.loadImage(from: urlString) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.imageView.image = image
             }
         }
-        task.resume()
     }
     
     private func viewUserData() {
         usernameLabel.text = user?.name
         bioLabel.text = user?.bio
-        loadUserFollowers()
+        loadUserFollowersNumberLabel()
     }
     
-    private func loadUserFollowers() {
+    private func loadUserFollowersNumberLabel() {
         let followersText = NSMutableAttributedString(string: "\(user?.name.components(separatedBy: " ").first ?? " ") has ")
         let followersCount = NSAttributedString(
             string: "\(user?.followers ?? 0)",
