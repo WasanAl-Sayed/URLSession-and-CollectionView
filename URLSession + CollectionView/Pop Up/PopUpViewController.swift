@@ -29,7 +29,7 @@ class PopUpViewController: UIViewController {
     }
     
     private func show(msg: String) {
-        UIView.animate(withDuration: 0.5, delay: 0.0) {
+        UIView.animate(withDuration: 0.2, delay: 0.0) {
             self.backView.alpha = 1
             self.contentView.alpha = 1
         }
@@ -55,7 +55,7 @@ class PopUpViewController: UIViewController {
     }
     
     func hide() {
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut) {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut) {
             self.backView.alpha = 0
             self.contentView.alpha = 0
         } completion: { _ in

@@ -13,6 +13,7 @@ class UserDetailsViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var followersNumberLabel: UILabel!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     let viewModel = GithubViewModel()
     var user: GithubUserModel?
@@ -20,7 +21,6 @@ class UserDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.setHidesBackButton(true, animated: true)
         configureImageView()
         loadUserImage()
         viewUserData()
@@ -63,17 +63,20 @@ class UserDetailsViewController: UIViewController {
     
     
     @IBAction func didPressGetFollowers(_ sender: UIButton) {
+        spinner.startAnimating()
         guard let username = username else { return }
-        viewModel.getFollowers(username: username)
-        viewModel.followersLoaded = { [weak self] result in
+        
+        viewModel.getFollowers(username: username, page: 1) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success:
                 DispatchQueue.main.async {
+                    self.spinner.stopAnimating()
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let viewController = storyboard.instantiateViewController(withIdentifier: "followersVC") as? UserFollowersViewController
                     viewController?.navigationItem.title = "Followers"
                     viewController?.viewModel = self.viewModel
+                    viewController?.username = self.username
                     self.navigationController?.pushViewController(viewController ?? UserFollowersViewController(), animated: true)
                 }
             case .failure(let error):

@@ -78,6 +78,7 @@ class UserViewController: UIViewController {
     private func handleSuccess(user: GithubUserModel) {
         DispatchQueue.main.async {
             self.spinner.stopAnimating()
+            self.configureSubmitButton(isEnabled: true)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController
             viewController?.user = user

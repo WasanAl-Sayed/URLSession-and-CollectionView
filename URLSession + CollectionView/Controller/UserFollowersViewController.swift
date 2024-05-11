@@ -11,8 +11,12 @@ class UserFollowersViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var viewModel = GithubViewModel()
+    var page = 2
+    var isLoading = false
+    var username: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +25,19 @@ class UserFollowersViewController: UIViewController {
             forCellWithReuseIdentifier: CustomCollectionViewCell.identifier
         )
     }
+    
+    func loadMoreFollowers() {
+        isLoading = true
+        spinner.startAnimating()
+        
+        viewModel.getFollowers(username: username ?? "", page: page) { [weak self] newFollowers in
+            self?.isLoading = false
+            DispatchQueue.main.async {
+                self?.spinner.stopAnimating()
+                self?.collectionView.reloadData()
+            }
+        }
+    }
 }
 
 extension UserFollowersViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -28,7 +45,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return viewModel.filteredFollowers?.count ?? 0
+        return viewModel.filteredFollowers.count
     }
     
     func collectionView(
@@ -39,10 +56,21 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             withReuseIdentifier: CustomCollectionViewCell.identifier,
             for: indexPath
         ) as? CustomCollectionViewCell
-        if let follower = viewModel.filteredFollowers?[indexPath.item] {
-            cell?.configureCell(follower: follower)
-        }
+        let follower = viewModel.filteredFollowers[indexPath.item]
+        cell?.configureCell(follower: follower)
         return cell ?? CustomCollectionViewCell()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        
+        if offsetY > contentHeight - scrollView.frame.height {
+            if !isLoading {
+                page += 1
+                loadMoreFollowers()
+            }
+        }
     }
 }
 

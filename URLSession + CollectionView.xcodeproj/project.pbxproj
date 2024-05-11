@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F71D47A2BECF1E50051E211 /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F71D4792BECF1E50051E211 /* NetworkLayer.swift */; };
 		2F82C0422BE8094F001B9194 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F82C0402BE8094F001B9194 /* CustomCollectionViewCell.swift */; };
 		2F82C0432BE8094F001B9194 /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F82C0412BE8094F001B9194 /* CustomCollectionViewCell.xib */; };
 		2F82C0452BE81514001B9194 /* GithubFollowerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F82C0442BE81514001B9194 /* GithubFollowerModel.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F71D4792BECF1E50051E211 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		2F82C0402BE8094F001B9194 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		2F82C0412BE8094F001B9194 /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		2F82C0442BE81514001B9194 /* GithubFollowerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubFollowerModel.swift; sourceTree = "<group>"; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F71D4782BECF16F0051E211 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2F71D4792BECF1E50051E211 /* NetworkLayer.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		2F82C03E2BE808FF001B9194 /* Pop Up */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +140,7 @@
 		2FD372A92BDA3BD70090A1B8 /* URLSession + CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				2F71D4782BECF16F0051E211 /* Networking */,
 				2F82C03F2BE80916001B9194 /* Custom Cell */,
 				2F82C03E2BE808FF001B9194 /* Pop Up */,
 				2F89B54D2BE3AF51002A2EEE /* Model */,
@@ -218,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F71D47A2BECF1E50051E211 /* NetworkLayer.swift in Sources */,
 				2FD372AF2BDA3BD70090A1B8 /* UserViewController.swift in Sources */,
 				2F82C0422BE8094F001B9194 /* CustomCollectionViewCell.swift in Sources */,
 				2F89B5512BE3BB6F002A2EEE /* GithubError.swift in Sources */,
