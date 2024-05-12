@@ -28,6 +28,18 @@ class PopUpViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func configureContentView() {
+        contentView.layer.cornerRadius = 30
+        contentView.clipsToBounds = true
+        contentView.alpha = 0
+    }
+    
+    private func configureBackView() {
+        view.backgroundColor = .clear
+        backView.backgroundColor = .black.withAlphaComponent(0.6)
+        backView.alpha = 0
+    }
+    
     private func show(msg: String) {
         UIView.animate(withDuration: 0.2, delay: 0.0) {
             self.backView.alpha = 1
@@ -36,31 +48,19 @@ class PopUpViewController: UIViewController {
         errorLabel.text = msg
     }
     
-    func configureContentView() {
-        contentView.layer.cornerRadius = 30
-        contentView.clipsToBounds = true
-        contentView.alpha = 0
-    }
-    
-    func configureBackView() {
-        view.backgroundColor = .clear
-        backView.backgroundColor = .black.withAlphaComponent(0.6)
-        backView.alpha = 0
-    }
-    
-    func appear(sender: UIViewController, msg: String) {
-        sender.present(self, animated: false) {
-            self.show(msg: msg)
-        }
-    }
-    
-    func hide() {
+    private func hide() {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut) {
             self.backView.alpha = 0
             self.contentView.alpha = 0
         } completion: { _ in
             self.dismiss(animated: false)
             self.removeFromParent()
+        }
+    }
+    
+    func appear(sender: UIViewController, msg: String) {
+        sender.present(self, animated: false) {
+            self.show(msg: msg)
         }
     }
     

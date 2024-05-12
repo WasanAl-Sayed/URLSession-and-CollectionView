@@ -9,19 +9,19 @@ import UIKit
 
 class GithubViewModel {
     
-    private(set) var followers: [GithubFollowerModel] = []
-    private(set) var filteredFollowers: [GithubFollowerModel] = []
+    var followers: [(GithubFollowerModel, UIImage)] = []
+    var filteredFollowers: [(GithubFollowerModel, UIImage)] = []
     
     private var networkLayer = NetworkLayer()
     
     func getUser(
         username: String,
-        completion: @escaping (Result<GithubUserModel, GithubError>) -> Void
+        completion: @escaping (Result<(GithubUserModel, UIImage), GithubError>) -> Void
     ) {
         Task {
             do {
-                let user = try await networkLayer.getUser(username: username)
-                completion(.success(user))
+                let (user, image) = try await networkLayer.getUser(username: username)
+                completion(.success((user, image)))
             } catch {
                 completion(.failure(.invalidData))
             }
@@ -47,25 +47,6 @@ class GithubViewModel {
     
     func searchFollowers(name: String) {
         filteredFollowers.removeAll()
-        
-        if name.isEmpty {
-            filteredFollowers = followers
-        } else {
-            filteredFollowers = followers.filter { $0.login.localizedCaseInsensitiveContains(name) }
-        }
-    }
-    
-    func loadImage(
-        from url: String,
-        completion: @escaping (UIImage?) -> Void
-    ) {
-        Task {
-            do {
-                let image = try await networkLayer.loadImage(from: url)
-                completion(image)
-            } catch {
-                completion(nil)
-            }
-        }
+        filteredFollowers = name.isEmpty ? followers : followers.filter { $0.0.login.localizedCaseInsensitiveContains(name) }
     }
 }

@@ -25,12 +25,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
         return UINib(nibName: "CustomCollectionViewCell", bundle: nil)
     }
     
-    func configureCell(follower: GithubFollowerModel) {
+    func configureCell(follower: GithubFollowerModel, image: UIImage) {
         usernameLabel.text = follower.login.components(separatedBy: " ").first
-        viewModel.loadImage(from: follower.avatarUrl) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.imageView.image = image
-            }
-        }
+        imageView.image = image
     }
 }

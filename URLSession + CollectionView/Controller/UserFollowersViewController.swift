@@ -12,10 +12,12 @@ class UserFollowersViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var spinnerView: UIView!
+    
+    private var page = 1
+    private var isLoading = false
     
     var viewModel = GithubViewModel()
-    var page = 2
-    var isLoading = false
     var username: String?
     
     override func viewDidLoad() {
@@ -24,15 +26,24 @@ class UserFollowersViewController: UIViewController {
             CustomCollectionViewCell.nib(),
             forCellWithReuseIdentifier: CustomCollectionViewCell.identifier
         )
+        emptyViewModelArrays()
+        loadFollowers()
     }
     
-    func loadMoreFollowers() {
+    private func emptyViewModelArrays() {
+        viewModel.filteredFollowers.removeAll()
+        viewModel.followers.removeAll()
+    }
+    
+    private func loadFollowers() {
         isLoading = true
+        spinnerView.isHidden = false
         spinner.startAnimating()
         
         viewModel.getFollowers(username: username ?? "", page: page) { [weak self] newFollowers in
             self?.isLoading = false
             DispatchQueue.main.async {
+                self?.spinnerView.isHidden = true
                 self?.spinner.stopAnimating()
                 self?.collectionView.reloadData()
             }
@@ -57,7 +68,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             for: indexPath
         ) as? CustomCollectionViewCell
         let follower = viewModel.filteredFollowers[indexPath.item]
-        cell?.configureCell(follower: follower)
+        cell?.configureCell(follower: follower.0, image: follower.1)
         return cell ?? CustomCollectionViewCell()
     }
     
@@ -68,7 +79,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         if offsetY > contentHeight - scrollView.frame.height {
             if !isLoading {
                 page += 1
-                loadMoreFollowers()
+                loadFollowers()
             }
         }
     }

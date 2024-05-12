@@ -58,8 +58,8 @@
                                     <action selector="didPressSubmitButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lE9-EI-Eay"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="2N0-vE-P2b">
-                                <rect key="frame" x="178" y="407.66666666666669" width="37" height="37"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="2N0-vE-P2b">
+                                <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -149,9 +149,6 @@
                                     <action selector="didPressGetFollowers:" destination="KK0-5U-7OG" eventType="touchUpInside" id="o5e-nv-PsR"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="pPe-5b-XRG">
-                                <rect key="frame" x="178" y="407.66666666666669" width="37" height="37"/>
-                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vIZ-rS-BTo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -162,12 +159,10 @@
                             <constraint firstAttribute="bottomMargin" secondItem="A2N-vt-f5P" secondAttribute="bottom" constant="50" id="QOL-V5-fqg"/>
                             <constraint firstItem="A2N-vt-f5P" firstAttribute="leading" secondItem="XAz-FJ-dfr" secondAttribute="leadingMargin" constant="10" id="WUP-Pd-i4r"/>
                             <constraint firstItem="pzT-6E-eDf" firstAttribute="top" secondItem="E4c-Ku-LxQ" secondAttribute="bottom" constant="20" id="XEV-Zp-kNs"/>
-                            <constraint firstItem="pPe-5b-XRG" firstAttribute="centerX" secondItem="XAz-FJ-dfr" secondAttribute="centerX" id="ool-Bp-5ki"/>
                             <constraint firstAttribute="trailingMargin" secondItem="VkS-5h-YFO" secondAttribute="trailing" constant="20" id="q90-zX-GZv"/>
                             <constraint firstItem="VkS-5h-YFO" firstAttribute="leading" secondItem="XAz-FJ-dfr" secondAttribute="leadingMargin" constant="20" id="sxi-rg-qlc"/>
                             <constraint firstItem="E4c-Ku-LxQ" firstAttribute="centerX" secondItem="XAz-FJ-dfr" secondAttribute="centerX" id="xQg-u3-27G"/>
                             <constraint firstItem="pzT-6E-eDf" firstAttribute="centerX" secondItem="XAz-FJ-dfr" secondAttribute="centerX" id="xVT-fR-7pE"/>
-                            <constraint firstItem="pPe-5b-XRG" firstAttribute="centerY" secondItem="XAz-FJ-dfr" secondAttribute="centerY" id="yYV-4R-byb"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" style="editor" id="zaV-3D-5cp"/>
@@ -175,7 +170,6 @@
                         <outlet property="bioLabel" destination="kxY-Jg-Edo" id="BJ5-Cu-sc1"/>
                         <outlet property="followersNumberLabel" destination="QuT-OA-pIB" id="CBm-yQ-r6K"/>
                         <outlet property="imageView" destination="E4c-Ku-LxQ" id="FhE-uh-X9V"/>
-                        <outlet property="spinner" destination="pPe-5b-XRG" id="Hcj-ZU-HFF"/>
                         <outlet property="usernameLabel" destination="pzT-6E-eDf" id="g0e-36-cVg"/>
                     </connections>
                 </viewController>
@@ -192,14 +186,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="LRi-da-dZL">
-                                <rect key="frame" x="0.0" y="59" width="393" height="19"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="DYO-wS-7rf" id="YZ8-RD-tq0"/>
                                 </connections>
                             </searchBar>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7ps-cI-11n">
-                                <rect key="frame" x="0.0" y="78" width="393" height="774"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kBc-ZB-sPX">
+                                <rect key="frame" x="0.0" y="115" width="393" height="737"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KDI-M8-RTH">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="737"/>
@@ -212,7 +206,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="tpE-Xd-pqV">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" reuseIdentifier="cell" id="tpE-Xd-pqV">
                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="120"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7OV-hn-cjY">
@@ -227,13 +221,22 @@
                                             <outlet property="delegate" destination="DYO-wS-7rf" id="Evd-H8-Rsa"/>
                                         </connections>
                                     </collectionView>
-                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="eE3-gn-un1">
-                                        <rect key="frame" x="0.0" y="737" width="393" height="37"/>
-                                    </activityIndicatorView>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zXH-sf-vNr">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="40"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="hLv-GP-XfO">
+                                                <rect key="frame" x="186.66666666666666" y="0.0" width="20" height="20"/>
+                                            </activityIndicatorView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="393" id="0ji-hO-iAw"/>
+                                            <constraint firstItem="hLv-GP-XfO" firstAttribute="top" secondItem="zXH-sf-vNr" secondAttribute="top" id="EgO-MI-lnU"/>
+                                            <constraint firstItem="hLv-GP-XfO" firstAttribute="centerX" secondItem="zXH-sf-vNr" secondAttribute="centerX" id="H2s-wQ-CC0"/>
+                                            <constraint firstAttribute="height" constant="40" id="lMZ-SE-C2d"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="eE3-gn-un1" firstAttribute="centerX" secondItem="7ps-cI-11n" secondAttribute="centerX" id="gnd-oC-zZn"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pNl-CI-ic4"/>
@@ -241,17 +244,18 @@
                         <constraints>
                             <constraint firstItem="LRi-da-dZL" firstAttribute="top" secondItem="pNl-CI-ic4" secondAttribute="top" id="6fY-C8-vtq"/>
                             <constraint firstAttribute="trailing" secondItem="LRi-da-dZL" secondAttribute="trailing" id="7O5-Ap-zUM"/>
+                            <constraint firstAttribute="trailing" secondItem="kBc-ZB-sPX" secondAttribute="trailing" id="7YH-Hq-mYY"/>
+                            <constraint firstItem="kBc-ZB-sPX" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="LZF-j4-5yY"/>
                             <constraint firstItem="LRi-da-dZL" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="iqX-yM-cS5"/>
-                            <constraint firstAttribute="trailing" secondItem="7ps-cI-11n" secondAttribute="trailing" id="oNp-G0-Qah"/>
-                            <constraint firstItem="7ps-cI-11n" firstAttribute="top" secondItem="LRi-da-dZL" secondAttribute="bottom" id="oss-dn-Ndn"/>
-                            <constraint firstItem="7ps-cI-11n" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="owH-ln-yug"/>
-                            <constraint firstAttribute="bottom" secondItem="7ps-cI-11n" secondAttribute="bottom" id="u2c-zu-HZj"/>
+                            <constraint firstItem="kBc-ZB-sPX" firstAttribute="top" secondItem="LRi-da-dZL" secondAttribute="bottom" id="yFd-Eb-iXr"/>
+                            <constraint firstAttribute="bottom" secondItem="kBc-ZB-sPX" secondAttribute="bottom" id="yrV-bo-ztU"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="KDI-M8-RTH" id="ifB-Kv-EDx"/>
                         <outlet property="searchBar" destination="LRi-da-dZL" id="qhL-MS-jgC"/>
-                        <outlet property="spinner" destination="eE3-gn-un1" id="hcb-WK-umM"/>
+                        <outlet property="spinner" destination="hLv-GP-XfO" id="jXI-3j-WaC"/>
+                        <outlet property="spinnerView" destination="zXH-sf-vNr" id="1aI-a3-aWP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CgU-1x-5Ye" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

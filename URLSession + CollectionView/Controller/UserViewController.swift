@@ -13,8 +13,8 @@ class UserViewController: UIViewController {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var submitButton: UIButton!
     
-    let viewModel = GithubViewModel()
-    var isButtonEnabled = true
+    private let viewModel = GithubViewModel()
+    private var isButtonEnabled = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,29 +39,32 @@ class UserViewController: UIViewController {
         usernameTextField.leftViewMode = .always
     }
     
+    private func configureUIElements(bool: Bool) {
+        if bool {
+            spinner.stopAnimating()
+        } else {
+            spinner.startAnimating()
+        }
+        usernameTextField.isUserInteractionEnabled = bool
+        isButtonEnabled = bool
+        submitButton.isEnabled = bool
+    }
+    
     private func usernameIsFull() {
         if isButtonEnabled {
-            spinner.startAnimating()
-            isButtonEnabled = false
-            submitButton.isEnabled = false
-            DispatchQueue.main.async() { [weak self] in
+            configureUIElements(bool: false)
+            
+            viewModel.getUser(username: usernameTextField.text ?? "") { [weak self] result in
                 guard let self = self else { return }
                 
-                self.viewModel.getUser(username: self.usernameTextField.text ?? "") { result in
-                    switch result {
-                    case .success(let user):
-                        self.handleSuccess(user: user)
-                    case .failure(let error):
-                        self.errorMessage(error: error)
-                    }
+                switch result {
+                case .success(let (user, image)):
+                    self.handleSuccess(user: user, image: image)
+                case .failure(let error):
+                    self.errorMessage(error: error)
                 }
             }
         }
-    }
-    
-    private func configureSubmitButton(isEnabled: Bool) {
-        isButtonEnabled = isEnabled
-        submitButton.isEnabled = isEnabled
     }
     
     private func errorMessage(error: GithubError) {
@@ -75,24 +78,25 @@ class UserViewController: UIViewController {
         }
     }
     
-    private func handleSuccess(user: GithubUserModel) {
+    private func handleSuccess(user: GithubUserModel, image: UIImage) {
         DispatchQueue.main.async {
-            self.spinner.stopAnimating()
-            self.configureSubmitButton(isEnabled: true)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController
             viewController?.user = user
             viewController?.username = self.usernameTextField.text ?? ""
+            viewController?.userImage = image
+            self.spinner.stopAnimating()
+            self.usernameTextField.isUserInteractionEnabled = true
+            self.configureUIElements(bool: true)
             self.navigationController?.pushViewController(viewController ?? UserDetailsViewController(), animated: true)
         }
     }
     
     private func handleFailure(msg: String) {
         DispatchQueue.main.async {
-            self.spinner.stopAnimating()
             let popUp = PopUpViewController()
             popUp.appear(sender: self, msg: msg)
-            self.configureSubmitButton(isEnabled: true)
+            self.configureUIElements(bool: true)
         }
     }
     
