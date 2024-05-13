@@ -238,6 +238,9 @@
                                     </view>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Uua-hA-czw">
+                                <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pNl-CI-ic4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -245,7 +248,9 @@
                             <constraint firstItem="LRi-da-dZL" firstAttribute="top" secondItem="pNl-CI-ic4" secondAttribute="top" id="6fY-C8-vtq"/>
                             <constraint firstAttribute="trailing" secondItem="LRi-da-dZL" secondAttribute="trailing" id="7O5-Ap-zUM"/>
                             <constraint firstAttribute="trailing" secondItem="kBc-ZB-sPX" secondAttribute="trailing" id="7YH-Hq-mYY"/>
+                            <constraint firstItem="Uua-hA-czw" firstAttribute="centerX" secondItem="8DR-iR-9tz" secondAttribute="centerX" id="Bac-aC-Jdy"/>
                             <constraint firstItem="kBc-ZB-sPX" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="LZF-j4-5yY"/>
+                            <constraint firstItem="Uua-hA-czw" firstAttribute="centerY" secondItem="8DR-iR-9tz" secondAttribute="centerY" id="RnQ-mS-hps"/>
                             <constraint firstItem="LRi-da-dZL" firstAttribute="leading" secondItem="8DR-iR-9tz" secondAttribute="leading" id="iqX-yM-cS5"/>
                             <constraint firstItem="kBc-ZB-sPX" firstAttribute="top" secondItem="LRi-da-dZL" secondAttribute="bottom" id="yFd-Eb-iXr"/>
                             <constraint firstAttribute="bottom" secondItem="kBc-ZB-sPX" secondAttribute="bottom" id="yrV-bo-ztU"/>
@@ -253,6 +258,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="KDI-M8-RTH" id="ifB-Kv-EDx"/>
+                        <outlet property="loadingSpinner" destination="Uua-hA-czw" id="iGA-Uu-CSo"/>
                         <outlet property="searchBar" destination="LRi-da-dZL" id="qhL-MS-jgC"/>
                         <outlet property="spinner" destination="hLv-GP-XfO" id="jXI-3j-WaC"/>
                         <outlet property="spinnerView" destination="zXH-sf-vNr" id="1aI-a3-aWP"/>

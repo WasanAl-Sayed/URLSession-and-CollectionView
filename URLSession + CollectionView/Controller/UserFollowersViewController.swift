@@ -13,6 +13,7 @@ class UserFollowersViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var spinnerView: UIView!
+    @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     
     private var page = 1
     private var isLoading = false
@@ -37,14 +38,23 @@ class UserFollowersViewController: UIViewController {
     
     private func loadFollowers() {
         isLoading = true
-        spinnerView.isHidden = false
-        spinner.startAnimating()
+        if page == 1 {
+            loadingSpinner.startAnimating()
+        } else {
+            spinnerView.isHidden = false
+            spinner.startAnimating()
+        }
         
         viewModel.getFollowers(username: username ?? "", page: page) { [weak self] newFollowers in
             self?.isLoading = false
             DispatchQueue.main.async {
-                self?.spinnerView.isHidden = true
-                self?.spinner.stopAnimating()
+                if self?.page == 1 {
+                    self?.loadingSpinner.stopAnimating()
+                    self?.loadingSpinner.isHidden = true
+                } else {
+                    self?.spinnerView.isHidden = true
+                    self?.spinner.stopAnimating()
+                }
                 self?.collectionView.reloadData()
             }
         }
@@ -68,7 +78,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             for: indexPath
         ) as? CustomCollectionViewCell
         let follower = viewModel.filteredFollowers[indexPath.item]
-        cell?.configureCell(follower: follower.0, image: follower.1)
+        cell?.configureCell(username: follower.0.login.components(separatedBy: " ").first ?? "", image: follower.1)
         return cell ?? CustomCollectionViewCell()
     }
     
