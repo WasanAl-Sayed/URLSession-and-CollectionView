@@ -9,18 +9,23 @@ import UIKit
 
 class UserViewController: UIViewController {
 
+    // MARK: - Outlets
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     @IBOutlet weak var submitButton: UIButton!
     
-    private let viewModel = GithubViewModel()
+    // MARK: - Properties
+    private let viewModel = UserViewModel()
     private var isButtonEnabled = true
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUserNameTextField()
+        setupBindings()
     }
     
+    // MARK: - Setup Methods
     private func configureUserNameTextField() {
         let borderColor: UIColor = UIColor(named: "borderColor") ?? UIColor.black
         usernameTextField.layer.borderColor = borderColor.cgColor
@@ -39,72 +44,65 @@ class UserViewController: UIViewController {
         usernameTextField.leftViewMode = .always
     }
     
-    private func configureUIElements(bool: Bool) {
-        if bool {
-            spinner.stopAnimating()
-        } else {
-            spinner.startAnimating()
+    private func setupBindings() {
+        viewModel.onSuccess = { [weak self] user, image in
+            self?.handleUserFetchSuccess(user: user, image: image)
         }
-        usernameTextField.isUserInteractionEnabled = bool
-        isButtonEnabled = bool
-        submitButton.isEnabled = bool
-    }
-    
-    private func usernameIsFull() {
-        if isButtonEnabled {
-            configureUIElements(bool: false)
-            
-            viewModel.getUser(username: usernameTextField.text ?? "") { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success(let (user, image)):
-                    self.handleSuccess(user: user, image: image)
-                case .failure(let error):
-                    self.errorMessage(error: error)
-                }
-            }
+        viewModel.onFailure = { [weak self] error in
+            self?.handleUserFetchFailure(error: error)
         }
     }
     
-    private func errorMessage(error: GithubError) {
-        switch error {
-        case .invalidURL:
-            self.handleFailure(msg: "Invalid URL!")
-        case .invalidData:
-            self.handleFailure(msg: "Invalid Data!")
-        case .invalidResponse:
-            self.handleFailure(msg: "Invalid Response!")
-        }
+    // MARK: - UI Updates
+    private func configureUIElements(isEnabled: Bool) {
+        spinner.isHidden = isEnabled
+        usernameTextField.isUserInteractionEnabled = isEnabled
+        isButtonEnabled = isEnabled
+        submitButton.isEnabled = isEnabled
+        isEnabled ? spinner.stopAnimating() : spinner.startAnimating()
     }
     
-    private func handleSuccess(user: GithubUserModel, image: UIImage) {
+    // MARK: - Helper Methods
+    private func fetchUser() {
+        guard isButtonEnabled else { return }
+        configureUIElements(isEnabled: false)
+        viewModel.getUser(username: usernameTextField.text ?? "")
+    }
+    
+    private func handleUserFetchSuccess(user: GithubUserModel, image: UIImage) {
         DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController
-            viewController?.user = user
-            viewController?.username = self.usernameTextField.text ?? ""
-            viewController?.userImage = image
-            self.spinner.stopAnimating()
-            self.usernameTextField.isUserInteractionEnabled = true
-            self.configureUIElements(bool: true)
-            self.navigationController?.pushViewController(viewController ?? UserDetailsViewController(), animated: true)
+            self.navigateToUserDetails(user: user, image: image)
+            self.configureUIElements(isEnabled: true)
         }
     }
     
-    private func handleFailure(msg: String) {
+    private func handleUserFetchFailure(error: GithubError) {
         DispatchQueue.main.async {
-            let popUp = PopUpViewController()
-            popUp.appear(sender: self, msg: msg)
-            self.configureUIElements(bool: true)
+            self.showErrorMessage(message: self.viewModel.errorMessage(error: error))
+            self.configureUIElements(isEnabled: true)
         }
     }
     
+    private func navigateToUserDetails(user: GithubUserModel, image: UIImage) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let userDetailsVC = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController {
+            let userDetailsViewModel = UserDetailsViewModel(user: user, username: usernameTextField.text ?? "", image: image)
+            userDetailsVC.viewModel = userDetailsViewModel
+            navigationController?.pushViewController(userDetailsVC, animated: true)
+        }
+    }
+    
+    private func showErrorMessage(message: String) {
+        let popUp = PopUpViewController()
+        popUp.appear(sender: self, msg: message)
+    }
+    
+    // MARK: - Actions
     @IBAction func didPressSubmitButton(_ sender: UIButton) {
-        if let username = usernameTextField.text, !username.isEmpty {
-            usernameIsFull()
-        } else {
-            handleFailure(msg: "Please enter username")
+        guard let username = usernameTextField.text, !username.isEmpty else {
+            handleUserFetchFailure(error: .invalidURL) 
+            return
         }
+        fetchUser()
     }
 }

@@ -9,55 +9,70 @@ import UIKit
 
 class UserFollowersViewController: UIViewController {
     
+    // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var spinnerView: UIView!
     @IBOutlet weak var loadingSpinner: UIActivityIndicatorView!
     
+    // MARK: - Properties
     private var page = 1
     private var isLoading = false
     
-    var viewModel = GithubViewModel()
-    var username: String?
+    var viewModel: UserFollowersViewModel?
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBindings()
         collectionView.register(
             CustomCollectionViewCell.nib(),
             forCellWithReuseIdentifier: CustomCollectionViewCell.identifier
         )
-        emptyViewModelArrays()
+        viewModel?.emptyFollowersArrays()
         loadFollowers()
     }
     
-    private func emptyViewModelArrays() {
-        viewModel.filteredFollowers.removeAll()
-        viewModel.followers.removeAll()
-    }
-    
-    private func loadFollowers() {
-        isLoading = true
-        if page == 1 {
-            loadingSpinner.startAnimating()
-        } else {
-            spinnerView.isHidden = false
-            spinner.startAnimating()
-        }
-        
-        viewModel.getFollowers(username: username ?? "", page: page) { [weak self] newFollowers in
-            self?.isLoading = false
+    // MARK: - Setup Methods
+    private func setupBindings() {
+        viewModel?.onFollowersUpdated = { [weak self] in
             DispatchQueue.main.async {
-                if self?.page == 1 {
-                    self?.loadingSpinner.stopAnimating()
-                    self?.loadingSpinner.isHidden = true
-                } else {
-                    self?.spinnerView.isHidden = true
-                    self?.spinner.stopAnimating()
-                }
+                self?.configureLoadingSpinner(status: true)
+                self?.collectionView.reloadData()
+                self?.isLoading = false
+            }
+        }
+            
+        viewModel?.onFilteredFollowersUpdated = { [weak self] in
+            DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
         }
+            
+        viewModel?.onError = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.configureLoadingSpinner(status: true)
+                self?.isLoading = false
+            }
+        }
+    }
+    
+    private func loadFollowers() {
+        guard let username = viewModel?.username, !isLoading else { return }
+        isLoading = true
+        if page == 1 {
+            DispatchQueue.main.async {
+                self.configureLoadingSpinner(status: false)
+            }
+        } else {
+            collectionView.reloadSections(IndexSet(integer: 0))
+        }
+        viewModel?.getFollowers(username: username, page: page)
+    }
+    
+    // MARK: - UI Updates
+    private func configureLoadingSpinner(status: Bool) {
+        loadingSpinner.isHidden = status
+        status ? loadingSpinner.stopAnimating() : loadingSpinner.startAnimating()
     }
 }
 
@@ -66,7 +81,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return viewModel.filteredFollowers.count
+        return viewModel?.filteredFollowers.count ?? 0
     }
     
     func collectionView(
@@ -77,8 +92,12 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             withReuseIdentifier: CustomCollectionViewCell.identifier,
             for: indexPath
         ) as? CustomCollectionViewCell
-        let follower = viewModel.filteredFollowers[indexPath.item]
-        cell?.configureCell(username: follower.0.login.components(separatedBy: " ").first ?? "", image: follower.1)
+        if let follower = viewModel?.filteredFollowers[indexPath.item] {
+            cell?.configureCell(
+                username: follower.0.login.components(separatedBy: " ").first ?? "",
+                image: follower.1
+            )
+        }
         return cell ?? CustomCollectionViewCell()
     }
     
@@ -93,11 +112,42 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
             }
         }
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionFooter:
+            let footerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: "footer",
+                for: indexPath
+            ) as? FooterReusableView
+            
+            if isLoading, page != 1 {
+                footerView?.spinner.startAnimating()
+                footerView?.spinner.isHidden = false
+            } else {
+                footerView?.spinner.stopAnimating()
+                footerView?.spinner.isHidden = true
+            }
+            return footerView ?? UICollectionReusableView()
+            
+        default:
+            return UICollectionReusableView()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
+    }
 }
 
 extension UserFollowersViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.searchFollowers(name: searchText)
+        viewModel?.searchFollowers(name: searchText)
         collectionView.reloadData()
     }
 }

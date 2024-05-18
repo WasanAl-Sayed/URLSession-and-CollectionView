@@ -9,60 +9,48 @@ import UIKit
 
 class UserDetailsViewController: UIViewController {
     
+    // MARK: - Outlets
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var followersNumberLabel: UILabel!
     
-    private let viewModel = GithubViewModel()
+    // MARK: - Properties
+    var viewModel: UserDetailsViewModel?
     
-    var user: GithubUserModel?
-    var username: String?
-    var userImage: UIImage?
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureImageView()
         viewUserData()
-        viewUserImage()
     }
     
+    // MARK: - Setup Methods
     private func configureImageView() {
         imageView.layer.cornerRadius = imageView.frame.size.width / 2
         imageView.clipsToBounds = true
     }
     
     private func viewUserData() {
-        usernameLabel.text = user?.name
-        bioLabel.text = user?.bio
-        loadUserFollowersNumberLabel()
+        viewUserImage()
+        usernameLabel.text = viewModel?.user?.name
+        bioLabel.text = viewModel?.user?.bio
+        followersNumberLabel.attributedText = viewModel?.loadUserFollowersNumberLabel()
     }
     
     private func viewUserImage() {
         DispatchQueue.main.async {
-            self.imageView.image = self.userImage
+            self.imageView.image = self.viewModel?.image
         }
     }
     
-    private func loadUserFollowersNumberLabel() {
-        let followersText = NSMutableAttributedString(string: "\(user?.name.components(separatedBy: " ").first ?? " ") has ")
-        let followersCount = NSAttributedString(
-            string: "\(user?.followers ?? 0)",
-            attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 17)]
-        )
-        followersText.append(followersCount)
-        followersText.append(NSAttributedString(string: " followers"))
-        followersNumberLabel.attributedText = followersText
-    }
-    
+    // MARK: - Actions
     @IBAction func didPressGetFollowers(_ sender: UIButton) {
-        guard let username = username else { return }
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier: "followersVC") as? UserFollowersViewController
         viewController?.navigationItem.title = "Followers"
-        viewController?.viewModel = self.viewModel
-        viewController?.username = username
+        let userFollowersViewModel = UserFollowersViewModel(username: viewModel?.username ?? "")
+        viewController?.viewModel = userFollowersViewModel
         self.navigationController?.pushViewController(viewController ?? UserFollowersViewController(), animated: true)
     }
 }

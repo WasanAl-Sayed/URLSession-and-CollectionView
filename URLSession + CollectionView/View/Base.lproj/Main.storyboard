@@ -201,7 +201,7 @@
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="QY4-mG-AMp">
                                             <size key="itemSize" width="90" height="120"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="50" height="20"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
@@ -215,29 +215,30 @@
                                                 <size key="customSize" width="90" height="120"/>
                                             </collectionViewCell>
                                         </cells>
+                                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="footer" id="MCC-PH-jga" customClass="FooterReusableView" customModule="URLSession___CollectionView" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="120" width="393" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Pck-00-9eO">
+                                                    <rect key="frame" x="186.66666666666666" y="0.0" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Pck-00-9eO" firstAttribute="centerY" secondItem="MCC-PH-jga" secondAttribute="centerY" id="SAK-Xv-M2V"/>
+                                                <constraint firstItem="Pck-00-9eO" firstAttribute="centerX" secondItem="MCC-PH-jga" secondAttribute="centerX" id="ehP-bq-W6M"/>
+                                            </constraints>
+                                            <connections>
+                                                <outlet property="spinner" destination="Pck-00-9eO" id="42e-jL-O3f"/>
+                                            </connections>
+                                        </collectionReusableView>
                                         <connections>
                                             <outlet property="dataSource" destination="DYO-wS-7rf" id="dJT-Aa-d79"/>
                                             <outlet property="delegate" destination="DYO-wS-7rf" id="Evd-H8-Rsa"/>
                                         </connections>
                                     </collectionView>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zXH-sf-vNr">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="40"/>
-                                        <subviews>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="hLv-GP-XfO">
-                                                <rect key="frame" x="186.66666666666666" y="0.0" width="20" height="20"/>
-                                            </activityIndicatorView>
-                                        </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="393" id="0ji-hO-iAw"/>
-                                            <constraint firstItem="hLv-GP-XfO" firstAttribute="top" secondItem="zXH-sf-vNr" secondAttribute="top" id="EgO-MI-lnU"/>
-                                            <constraint firstItem="hLv-GP-XfO" firstAttribute="centerX" secondItem="zXH-sf-vNr" secondAttribute="centerX" id="H2s-wQ-CC0"/>
-                                            <constraint firstAttribute="height" constant="40" id="lMZ-SE-C2d"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                             </stackView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Uua-hA-czw">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Uua-hA-czw">
                                 <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
@@ -259,8 +260,6 @@
                         <outlet property="collectionView" destination="KDI-M8-RTH" id="ifB-Kv-EDx"/>
                         <outlet property="loadingSpinner" destination="Uua-hA-czw" id="iGA-Uu-CSo"/>
                         <outlet property="searchBar" destination="LRi-da-dZL" id="qhL-MS-jgC"/>
-                        <outlet property="spinner" destination="hLv-GP-XfO" id="jXI-3j-WaC"/>
-                        <outlet property="spinnerView" destination="zXH-sf-vNr" id="1aI-a3-aWP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CgU-1x-5Ye" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -13,7 +13,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     
     static let identifier = "CustomCollectionViewCell"
-    let viewModel = GithubViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
