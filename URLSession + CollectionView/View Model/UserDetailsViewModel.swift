@@ -10,10 +10,9 @@ import UIKit
 class UserDetailsViewModel {
     
     // MARK: - Properties
-    var networkLayer = NetworkLayer()
-    var user: GithubUserModel?
-    var username: String?
-    var image: UIImage?
+    private(set) var user: GithubUserModel?
+    private(set) var username: String?
+    private(set) var image: UIImage?
     
     // MARK: - Initializer
     init(user: GithubUserModel, username: String, image: UIImage) {

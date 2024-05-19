@@ -9,6 +9,8 @@ import UIKit
 
 class NetworkLayer {
     
+    private let baseURL = "https://api.github.com"
+    
     private func loadImage(from url: String) async throws -> UIImage {
         guard let url = URL(string: url) else {
             throw GithubError.invalidURL
@@ -23,7 +25,7 @@ class NetworkLayer {
     }
     
     func getUser(username: String) async throws -> (GithubUserModel, UIImage) {
-        let endpoint = "https://api.github.com/users/\(username)"
+        let endpoint = "\(baseURL)/users/\(username)"
         guard let url = URL(string: endpoint) else {
             throw GithubError.invalidURL
         }
@@ -43,7 +45,7 @@ class NetworkLayer {
     }
     
     func getFollowers(username: String, page: Int) async throws -> [(GithubFollowerModel, UIImage)] {
-        let endpoint = "https://api.github.com/users/\(username)/followers?page=\(page)"
+        let endpoint = "\(baseURL)/users/\(username)/followers?page=\(page)"
         guard let url = URL(string: endpoint) else {
             throw GithubError.invalidURL
         }

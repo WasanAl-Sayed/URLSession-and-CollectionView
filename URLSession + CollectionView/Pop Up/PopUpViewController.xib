@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PopUpViewController" customModule="URLSession___CollectionView" customModuleProvider="target">
             <connections>
-                <outlet property="backView" destination="OBR-JY-2Fg" id="BFt-qa-Mqb"/>
+                <outlet property="backgroundView" destination="OBR-JY-2Fg" id="PvN-JT-DpA"/>
                 <outlet property="contentView" destination="4LS-G6-z7L" id="7cg-Au-DU0"/>
                 <outlet property="errorLabel" destination="HaH-af-DqF" id="orZ-qm-Kog"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -26,7 +26,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4LS-G6-z7L">
-                    <rect key="frame" x="71.666666666666686" y="326" width="249.99999999999994" height="200"/>
+                    <rect key="frame" x="71.666666666666686" y="326" width="250" height="200"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something wrong" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-sJ-wzs">
                             <rect key="frame" x="25" y="30" width="200" height="24"/>

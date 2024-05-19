@@ -9,25 +9,25 @@ import UIKit
  
 class UserFollowersViewModel {
     
+    // MARK: - Data Binding Callbacks
+    var onFollowersUpdated: (() -> Void)?
+    var onFilteredFollowersUpdated: (() -> Void)?
+    var onError: (() -> Void)?
+    
     // MARK: - Properties
     private var networkLayer = NetworkLayer()
-    private(set) var followers: [(GithubFollowerModel, UIImage)] = [] {
+    private var followers: [(follower: GithubFollowerModel, image: UIImage)] = [] {
         didSet {
             onFollowersUpdated?()
         }
     }
-    private(set) var filteredFollowers: [(GithubFollowerModel, UIImage)] = [] {
+    private(set) var filteredFollowers: [(follower: GithubFollowerModel, image: UIImage)] = [] {
         didSet {
             onFilteredFollowersUpdated?()
         }
     }
     
-    var username: String?
-    
-    // MARK: - Data Binding Callbacks
-    var onFollowersUpdated: (() -> Void)?
-    var onFilteredFollowersUpdated: (() -> Void)?
-    var onError: ((GithubError) -> Void)?
+    private(set) var username: String?
     
     // MARK: - Initializer
     init(username: String) {
@@ -45,18 +45,13 @@ class UserFollowersViewModel {
                 self.followers += fetchedFollowers
                 self.filteredFollowers += fetchedFollowers
             } catch {
-                onError?(.invalidData)
+                onError?()
             }
         }
     }
     
     func searchFollowers(name: String) {
         filteredFollowers.removeAll()
-        filteredFollowers = name.isEmpty ? followers : followers.filter { $0.0.login.localizedCaseInsensitiveContains(name) }
-    }
-    
-    func emptyFollowersArrays() {
-        filteredFollowers.removeAll()
-        followers.removeAll()
+        filteredFollowers = name.isEmpty ? followers : followers.filter { $0.follower.login.localizedCaseInsensitiveContains(name) }
     }
 }

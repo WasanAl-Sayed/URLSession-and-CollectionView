@@ -39,17 +39,16 @@ class UserViewController: UIViewController {
                 height: usernameTextField.frame.height
             )
         )
-        usernameTextField.backgroundColor = .clear
         usernameTextField.leftView = paddingView
         usernameTextField.leftViewMode = .always
     }
     
     private func setupBindings() {
-        viewModel.onSuccess = { [weak self] user, image in
+        viewModel.onDataFetched = { [weak self] user, image in
             self?.handleUserFetchSuccess(user: user, image: image)
         }
-        viewModel.onFailure = { [weak self] error in
-            self?.handleUserFetchFailure(error: error)
+        viewModel.onShowError = { [weak self] errorMessage in
+            self?.handleUserFetchFailure(errorMessage: errorMessage)
         }
     }
     
@@ -76,9 +75,9 @@ class UserViewController: UIViewController {
         }
     }
     
-    private func handleUserFetchFailure(error: GithubError) {
+    private func handleUserFetchFailure(errorMessage: String) {
         DispatchQueue.main.async {
-            self.showErrorMessage(message: self.viewModel.errorMessage(error: error))
+            self.showErrorMessage(message: errorMessage)
             self.configureUIElements(isEnabled: true)
         }
     }
@@ -100,7 +99,7 @@ class UserViewController: UIViewController {
     // MARK: - Actions
     @IBAction func didPressSubmitButton(_ sender: UIButton) {
         guard let username = usernameTextField.text, !username.isEmpty else {
-            handleUserFetchFailure(error: .invalidURL) 
+            handleUserFetchFailure(errorMessage: "Please enter username")
             return
         }
         fetchUser()

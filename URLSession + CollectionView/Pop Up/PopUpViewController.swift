@@ -10,13 +10,13 @@ import UIKit
 class PopUpViewController: UIViewController {
 
     @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var contentView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureContentView()
-        configureBackView()
+        configureBackgroundView()
     }
     
     init() {
@@ -34,15 +34,15 @@ class PopUpViewController: UIViewController {
         contentView.alpha = 0
     }
     
-    private func configureBackView() {
+    private func configureBackgroundView() {
         view.backgroundColor = .clear
-        backView.backgroundColor = .black.withAlphaComponent(0.6)
-        backView.alpha = 0
+        backgroundView.backgroundColor = .black.withAlphaComponent(0.6)
+        backgroundView.alpha = 0
     }
     
     private func show(msg: String) {
         UIView.animate(withDuration: 0.2, delay: 0.0) {
-            self.backView.alpha = 1
+            self.backgroundView.alpha = 1
             self.contentView.alpha = 1
         }
         errorLabel.text = msg
@@ -50,7 +50,7 @@ class PopUpViewController: UIViewController {
     
     private func hide() {
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseOut) {
-            self.backView.alpha = 0
+            self.backgroundView.alpha = 0
             self.contentView.alpha = 0
         } completion: { _ in
             self.dismiss(animated: false)

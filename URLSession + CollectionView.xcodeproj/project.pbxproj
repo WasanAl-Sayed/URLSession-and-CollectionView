@@ -84,8 +84,8 @@
 		2F82C03E2BE808FF001B9194 /* Pop Up */ = {
 			isa = PBXGroup;
 			children = (
-				2F89B5532BE6B7DB002A2EEE /* PopUpViewController.xib */,
 				2F89B5522BE6B7DB002A2EEE /* PopUpViewController.swift */,
+				2F89B5532BE6B7DB002A2EEE /* PopUpViewController.xib */,
 			);
 			path = "Pop Up";
 			sourceTree = "<group>";
@@ -102,7 +102,6 @@
 		2F89B54A2BE3AEFE002A2EEE /* View Model */ = {
 			isa = PBXGroup;
 			children = (
-				2F89B5502BE3BB6F002A2EEE /* GithubError.swift */,
 				2F3158072BF927DF006E2968 /* UserViewModel.swift */,
 				2F3158092BF927EF006E2968 /* UserDetailsViewModel.swift */,
 				2F31580B2BF92801006E2968 /* UserFollowersViewModel.swift */,
@@ -115,6 +114,7 @@
 			children = (
 				2F89B54E2BE3AF64002A2EEE /* GithubUserModel.swift */,
 				2F82C0442BE81514001B9194 /* GithubFollowerModel.swift */,
+				2F89B5502BE3BB6F002A2EEE /* GithubError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -156,14 +156,14 @@
 		2FD372A92BDA3BD70090A1B8 /* URLSession + CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				2F9C7AF82BE0D6EE0099F79C /* View */,
+				2F89B54D2BE3AF51002A2EEE /* Model */,
+				2F9C7AF72BE0D6980099F79C /* Controller */,
+				2F89B54A2BE3AEFE002A2EEE /* View Model */,
 				2F3158002BF91723006E2968 /* Footer */,
 				2F71D4782BECF16F0051E211 /* Networking */,
 				2F82C03F2BE80916001B9194 /* Custom Cell */,
 				2F82C03E2BE808FF001B9194 /* Pop Up */,
-				2F89B54D2BE3AF51002A2EEE /* Model */,
-				2F89B54A2BE3AEFE002A2EEE /* View Model */,
-				2F9C7AF82BE0D6EE0099F79C /* View */,
-				2F9C7AF72BE0D6980099F79C /* Controller */,
 				2FD372AA2BDA3BD70090A1B8 /* AppDelegate.swift */,
 				2FD372AC2BDA3BD70090A1B8 /* SceneDelegate.swift */,
 				2FD372B32BDA3BD80090A1B8 /* Assets.xcassets */,

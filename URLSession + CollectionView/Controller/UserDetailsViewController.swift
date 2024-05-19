@@ -32,16 +32,10 @@ class UserDetailsViewController: UIViewController {
     }
     
     private func viewUserData() {
-        viewUserImage()
+        imageView.image = viewModel?.image
         usernameLabel.text = viewModel?.user?.name
         bioLabel.text = viewModel?.user?.bio
         followersNumberLabel.attributedText = viewModel?.loadUserFollowersNumberLabel()
-    }
-    
-    private func viewUserImage() {
-        DispatchQueue.main.async {
-            self.imageView.image = self.viewModel?.image
-        }
     }
     
     // MARK: - Actions

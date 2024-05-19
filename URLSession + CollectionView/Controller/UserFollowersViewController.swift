@@ -28,7 +28,6 @@ class UserFollowersViewController: UIViewController {
             CustomCollectionViewCell.nib(),
             forCellWithReuseIdentifier: CustomCollectionViewCell.identifier
         )
-        viewModel?.emptyFollowersArrays()
         loadFollowers()
     }
     
@@ -48,7 +47,7 @@ class UserFollowersViewController: UIViewController {
             }
         }
             
-        viewModel?.onError = { [weak self] error in
+        viewModel?.onError = { [weak self] in
             DispatchQueue.main.async {
                 self?.configureLoadingSpinner(status: true)
                 self?.isLoading = false
@@ -60,9 +59,7 @@ class UserFollowersViewController: UIViewController {
         guard let username = viewModel?.username, !isLoading else { return }
         isLoading = true
         if page == 1 {
-            DispatchQueue.main.async {
-                self.configureLoadingSpinner(status: false)
-            }
+            configureLoadingSpinner(status: false)
         } else {
             collectionView.reloadSections(IndexSet(integer: 0))
         }
@@ -94,8 +91,8 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         ) as? CustomCollectionViewCell
         if let follower = viewModel?.filteredFollowers[indexPath.item] {
             cell?.configureCell(
-                username: follower.0.login.components(separatedBy: " ").first ?? "",
-                image: follower.1
+                username: follower.follower.login.components(separatedBy: " ").first ?? "",
+                image: follower.image
             )
         }
         return cell ?? CustomCollectionViewCell()
@@ -126,13 +123,8 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
                 for: indexPath
             ) as? FooterReusableView
             
-            if isLoading, page != 1 {
-                footerView?.spinner.startAnimating()
-                footerView?.spinner.isHidden = false
-            } else {
-                footerView?.spinner.stopAnimating()
-                footerView?.spinner.isHidden = true
-            }
+            isLoading && page != 1 ? footerView?.spinner.startAnimating() : footerView?.spinner.stopAnimating()
+            footerView?.spinner.isHidden = !(isLoading && page != 1)
             return footerView ?? UICollectionReusableView()
             
         default:
