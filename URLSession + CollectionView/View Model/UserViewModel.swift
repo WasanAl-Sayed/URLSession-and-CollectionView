@@ -10,22 +10,28 @@ import UIKit
 class UserViewModel {
     
     // MARK: - Data Binding Callbacks
+    
     var onDataFetched: ((GithubUserModel, UIImage) -> Void)?
     var onShowError: ((String) -> Void)?
     
     // MARK: - Properties
-    private var networkLayer = NetworkLayer()
+    
+    private var client = Client()
     
     // MARK: - Methods
+    
     func getUser(username: String) {
         Task {
             do {
-                let (user, image) = try await networkLayer.getUser(username: username)
+                let (user, image) = try await client.getUser(username: username)
                 onDataFetched?(user, image)
-            } catch let error as GithubError {
-                onShowError?(error.localizedDescription)
             } catch {
-                onShowError?(GithubError.invalidData.localizedDescription)
+                if let error = error as? GithubError {
+                    onShowError?(error.localizedDescription)
+                } else {
+                    onShowError?(GithubError.invalidData.localizedDescription)
+                }
+                
             }
         }
     }

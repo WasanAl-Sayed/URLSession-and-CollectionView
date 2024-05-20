@@ -10,22 +10,25 @@ import UIKit
 class UserViewController: UIViewController {
 
     // MARK: - Outlets
+    
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var spinnerView: UIView!
     
     // MARK: - Properties
+    
     private let viewModel = UserViewModel()
-    private var isButtonEnabled = true
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUserNameTextField()
-        setupBindings()
+        bindViewMode()
     }
     
     // MARK: - Setup Methods
+    
     private func configureUserNameTextField() {
         let borderColor: UIColor = UIColor(named: "borderColor") ?? UIColor.black
         usernameTextField.layer.borderColor = borderColor.cgColor
@@ -43,7 +46,7 @@ class UserViewController: UIViewController {
         usernameTextField.leftViewMode = .always
     }
     
-    private func setupBindings() {
+    private func bindViewMode() {
         viewModel.onDataFetched = { [weak self] user, image in
             self?.handleUserFetchSuccess(user: user, image: image)
         }
@@ -53,39 +56,43 @@ class UserViewController: UIViewController {
     }
     
     // MARK: - UI Updates
-    private func configureUIElements(isEnabled: Bool) {
-        spinner.isHidden = isEnabled
-        usernameTextField.isUserInteractionEnabled = isEnabled
-        isButtonEnabled = isEnabled
-        submitButton.isEnabled = isEnabled
-        isEnabled ? spinner.stopAnimating() : spinner.startAnimating()
+    
+    private func configureSpinner(isEnabled: Bool) {
+        spinner.isHidden = !isEnabled
+        spinnerView.isHidden = !isEnabled
+        view.isUserInteractionEnabled = !isEnabled
+        isEnabled ? spinner.startAnimating() : spinner.stopAnimating()
     }
     
     // MARK: - Helper Methods
+    
     private func fetchUser() {
-        guard isButtonEnabled else { return }
-        configureUIElements(isEnabled: false)
+        configureSpinner(isEnabled: true)
         viewModel.getUser(username: usernameTextField.text ?? "")
     }
     
     private func handleUserFetchSuccess(user: GithubUserModel, image: UIImage) {
         DispatchQueue.main.async {
             self.navigateToUserDetails(user: user, image: image)
-            self.configureUIElements(isEnabled: true)
+            self.configureSpinner(isEnabled: false)
         }
     }
     
     private func handleUserFetchFailure(errorMessage: String) {
         DispatchQueue.main.async {
             self.showErrorMessage(message: errorMessage)
-            self.configureUIElements(isEnabled: true)
+            self.configureSpinner(isEnabled: false)
         }
     }
     
     private func navigateToUserDetails(user: GithubUserModel, image: UIImage) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let userDetailsVC = storyboard.instantiateViewController(withIdentifier: "userVC") as? UserDetailsViewController {
-            let userDetailsViewModel = UserDetailsViewModel(user: user, username: usernameTextField.text ?? "", image: image)
+            let userDetailsViewModel = UserDetailsViewModel(
+                user: user,
+                username: usernameTextField.text ?? "",
+                image: image
+            )
             userDetailsVC.viewModel = userDetailsViewModel
             navigationController?.pushViewController(userDetailsVC, animated: true)
         }
@@ -97,6 +104,7 @@ class UserViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
     @IBAction func didPressSubmitButton(_ sender: UIButton) {
         guard let username = usernameTextField.text, !username.isEmpty else {
             handleUserFetchFailure(errorMessage: "Please enter username")

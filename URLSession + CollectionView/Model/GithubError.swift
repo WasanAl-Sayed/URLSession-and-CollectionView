@@ -14,11 +14,11 @@ enum GithubError: Error {
     var localizedDescription: String {
         switch self {
         case .invalidURL:
-            return NSLocalizedString("Invalid URL", comment: "The URL provided is invalid.")
+            return "Invalid URL"
         case .invalidResponse:
-            return NSLocalizedString("Invalid Response", comment: "The response from the server is invalid.")
+            return "Invalid Response"
         case .invalidData:
-            return NSLocalizedString("Invalid Data", comment: "The data entered is invalid.")
+            return "Invalid Data"
         }
     }
 }

@@ -10,48 +10,56 @@ import UIKit
 class UserFollowersViewModel {
     
     // MARK: - Data Binding Callbacks
-    var onFollowersUpdated: (() -> Void)?
-    var onFilteredFollowersUpdated: (() -> Void)?
-    var onError: (() -> Void)?
+    
+    var onDataFetched: (() -> Void)?
+    var onShowError: ((String) -> Void)?
     
     // MARK: - Properties
-    private var networkLayer = NetworkLayer()
-    private var followers: [(follower: GithubFollowerModel, image: UIImage)] = [] {
-        didSet {
-            onFollowersUpdated?()
-        }
-    }
-    private(set) var filteredFollowers: [(follower: GithubFollowerModel, image: UIImage)] = [] {
-        didSet {
-            onFilteredFollowersUpdated?()
-        }
-    }
     
-    private(set) var username: String?
+    private var client = Client()
+    private var followers: [FollowersCellUIModel] = []
+    private(set) var filteredFollowers: [FollowersCellUIModel] = []
+    private(set) var username: String
+    private var page = 1
+    private(set) var isLoading = false
     
     // MARK: - Initializer
+    
     init(username: String) {
         self.username = username
     }
     
     // MARK: - Methods
-    func getFollowers(
-        username: String,
-        page: Int
-    ) {
+    
+    func fetchData() {
+        guard !isLoading else { return }
+        isLoading = true
+        
         Task {
             do {
-                let fetchedFollowers = try await networkLayer.getFollowers(username: username, page: page)
+                let fetchedFollowers = try await client.getFollowers(username: username, page: page)
                 self.followers += fetchedFollowers
-                self.filteredFollowers += fetchedFollowers
+                self.filteredFollowers = self.followers
+                self.page += 1
+                self.isLoading = false
+                self.onDataFetched?()
             } catch {
-                onError?()
+                self.isLoading = false
+                if let error = error as? GithubError {
+                    onShowError?(error.localizedDescription)
+                } else {
+                    onShowError?(GithubError.invalidData.localizedDescription)
+                }
             }
         }
     }
     
     func searchFollowers(name: String) {
-        filteredFollowers.removeAll()
-        filteredFollowers = name.isEmpty ? followers : followers.filter { $0.follower.login.localizedCaseInsensitiveContains(name) }
+        filteredFollowers = if name.isEmpty {
+            followers
+        } else {
+            followers.filter { $0.name.localizedCaseInsensitiveContains(name) }
+        }
+        onDataFetched?()
     }
 }

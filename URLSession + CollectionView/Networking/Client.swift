@@ -1,5 +1,5 @@
 //
-//  NetworkLayer.swift
+//  Client.swift
 //  URLSession + CollectionView
 //
 //  Created by fts on 09/05/2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NetworkLayer {
+class Client {
     
     private let baseURL = "https://api.github.com"
     
@@ -44,7 +44,7 @@ class NetworkLayer {
         return (user, image)
     }
     
-    func getFollowers(username: String, page: Int) async throws -> [(GithubFollowerModel, UIImage)] {
+    func getFollowers(username: String, page: Int) async throws -> [FollowersCellUIModel] {
         let endpoint = "\(baseURL)/users/\(username)/followers?page=\(page)"
         guard let url = URL(string: endpoint) else {
             throw GithubError.invalidURL
@@ -59,11 +59,15 @@ class NetworkLayer {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let followers = try decoder.decode([GithubFollowerModel].self, from: data)
         
-        var followersWithImages: [(GithubFollowerModel, UIImage)] = []
+        var followersWithImages: [FollowersCellUIModel] = []
         for follower in followers {
             do {
                 let image = try await loadImage(from: follower.avatarUrl)
-                followersWithImages.append((follower, image))
+                let follower = FollowersCellUIModel(
+                    name: follower.login.components(separatedBy: " ").first ?? "",
+                    image: image
+                )
+                followersWithImages.append(follower)
             } catch {
                 print("Error loading image for follower: \(follower.login)")
             }

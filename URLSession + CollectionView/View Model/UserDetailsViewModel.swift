@@ -15,14 +15,20 @@ class UserDetailsViewModel {
     private(set) var image: UIImage?
     
     // MARK: - Initializer
-    init(user: GithubUserModel, username: String, image: UIImage) {
+    
+    init(
+        user: GithubUserModel,
+        username: String,
+        image: UIImage
+    ) {
         self.user = user
         self.username = username
         self.image = image
     }
     
     // MARK: - Methods
-    func loadUserFollowersNumberLabel() -> NSMutableAttributedString {
+    
+    func getFollowersLabelText() -> NSMutableAttributedString {
         let followersText = NSMutableAttributedString(string: "\(user?.name.components(separatedBy: " ").first ?? " ") has ")
         let followersCount = NSAttributedString(
             string: "\(user?.followers ?? 0)",
