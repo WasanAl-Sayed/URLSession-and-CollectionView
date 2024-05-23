@@ -22,6 +22,9 @@ class UserFollowersViewModel {
     private(set) var username: String
     private var page = 1
     private(set) var isLoading = false
+    var shouldShowSpinner: Bool {
+        return isLoading && !filteredFollowers.isEmpty
+    }
     
     // MARK: - Initializer
     
@@ -31,8 +34,9 @@ class UserFollowersViewModel {
     
     // MARK: - Methods
     
-    func fetchData() {
+    func fetchData(page: Int = 1) {
         guard !isLoading else { return }
+        self.page = page
         isLoading = true
         
         Task {
@@ -40,7 +44,6 @@ class UserFollowersViewModel {
                 let fetchedFollowers = try await client.getFollowers(username: username, page: page)
                 self.followers += fetchedFollowers
                 self.filteredFollowers = self.followers
-                self.page += 1
                 self.isLoading = false
                 self.onDataFetched?()
             } catch {
@@ -52,6 +55,11 @@ class UserFollowersViewModel {
                 }
             }
         }
+    }
+    
+    func fetchNextPage() {
+        guard !isLoading else { return }
+        fetchData(page: page + 1)
     }
     
     func searchFollowers(name: String) {

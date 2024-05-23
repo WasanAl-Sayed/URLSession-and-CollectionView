@@ -58,9 +58,7 @@ class UserViewController: UIViewController {
     // MARK: - UI Updates
     
     private func configureSpinner(isEnabled: Bool) {
-        spinner.isHidden = !isEnabled
         spinnerView.isHidden = !isEnabled
-        view.isUserInteractionEnabled = !isEnabled
         isEnabled ? spinner.startAnimating() : spinner.stopAnimating()
     }
     
@@ -70,7 +68,7 @@ class UserViewController: UIViewController {
         configureSpinner(isEnabled: true)
         viewModel.getUser(username: usernameTextField.text ?? "")
     }
-    
+
     private func handleUserFetchSuccess(user: GithubUserModel, image: UIImage) {
         DispatchQueue.main.async {
             self.navigateToUserDetails(user: user, image: image)

@@ -24,13 +24,13 @@ class UserFollowersViewController: UIViewController {
         super.viewDidLoad()
         configureViews()
         bindViewModel()
-        fetchData()
+        viewModel?.fetchData()
     }
     
     // MARK: - Setup Methods
     private func configureViews() {
         loadingSpinner.startAnimating()
-        self.title = "Followers"
+        title = "Followers"
         collectionView.register(
             FollowersCollectionViewCell.nib(),
             forCellWithReuseIdentifier: FollowersCollectionViewCell.identifier
@@ -44,18 +44,13 @@ class UserFollowersViewController: UIViewController {
                 self?.collectionView.reloadData()
             }
         }
-            
+        
         viewModel?.onShowError = { [weak self] error in
             DispatchQueue.main.async {
                 self?.configureLoadingSpinner(isLoading: false)
-                let popUp = PopUpViewController()
-                popUp.appear(sender: self ?? UserFollowersViewController(), msg: error)
+                self?.showErrorMessage(message: error)
             }
         }
-    }
-    
-    private func fetchData() {
-        viewModel?.fetchData()
     }
     
     // MARK: - UI Updates
@@ -63,6 +58,13 @@ class UserFollowersViewController: UIViewController {
     private func configureLoadingSpinner(isLoading: Bool) {
         loadingSpinner.isHidden = !isLoading
         isLoading ? loadingSpinner.startAnimating() : loadingSpinner.stopAnimating()
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func showErrorMessage(message: String) {
+        let popUp = PopUpViewController()
+        popUp.appear(sender: self, msg: message)
     }
 }
 
@@ -87,7 +89,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         if let follower = viewModel?.filteredFollowers[indexPath.item] {
             cell?.configureCell(follower: follower)
         }
-        return cell ?? FollowersCollectionViewCell()
+        return cell ?? UICollectionViewCell()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -96,7 +98,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
         
         if offsetY > contentHeight - scrollView.frame.height {
             if !(viewModel?.isLoading ?? true) {
-                fetchData()
+                viewModel?.fetchNextPage()
             }
         }
     }
@@ -114,7 +116,7 @@ extension UserFollowersViewController: UICollectionViewDelegate, UICollectionVie
                 for: indexPath
             ) as? FooterReusableView
             
-            let shouldShowSpinner = (viewModel?.isLoading ?? false) && !(viewModel?.filteredFollowers.isEmpty ?? true)
+            let shouldShowSpinner = viewModel?.shouldShowSpinner ?? false
             footerView?.spinner.isHidden = !shouldShowSpinner
             shouldShowSpinner ? footerView?.spinner.startAnimating() : footerView?.spinner.stopAnimating()
             return footerView ?? UICollectionReusableView()
